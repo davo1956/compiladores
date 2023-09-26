@@ -1,0 +1,29 @@
+
+sesion-Haskell-modifEstado.txt
+--
+-- Test modifEstado:
+-- *L0sintaxis> :l L0semantica.hs
+-- *L0sintaxis>
+-- *L0semantica> lvyz = VLlv Vy (VLvar Vz) -- [y,z]
+-- lvyz :: VarList
+-- *L0semantica>
+-- *L0semantica> ledos1 = estadosOf lvyz
+-- ledos1 :: [[(Var, Int)]]
+-- *L0semantica> ledos1
+-- [[(Vy,0),(Vz,0)],[(Vy,0),(Vz,1)],[(Vy,0),(Vz,2)],[(Vy,0),(Vz,3)],[(Vy,1),(Vz,0)],[(Vy,1),(Vz,1)],[(Vy,1),(Vz,2)],[(Vy,1),(Vz,3)],[(Vy,2),(Vz,0)],[(Vy,2),(Vz,1)],[(Vy,2),(Vz,2)],[(Vy,2),(Vz,3)],[(Vy,3),(Vz,0)],[(Vy,3),(Vz,1)],[(Vy,3),(Vz,2)],[(Vy,3),(Vz,3)]]
+-- it :: [[(Var, Int)]]
+-- *L0semantica>
+-- *L0semantica> length ledos1
+-- 16
+-- it :: Int
+-- *L0semantica> edo7 = ledos1 !! 6
+-- edo7 :: [(Var, Int)]
+-- *L0semantica> edo7
+-- [(Vy,1),(Vz,2)]
+-- it :: [(Var, Int)]
+-- *L0semantica>
+-- *L0semantica> modifEstado edo7 Vz 3
+-- [(Vy,1),(Vz,3)]
+-- it :: [(Var, Int)]
+-- *L0semantica>
+--

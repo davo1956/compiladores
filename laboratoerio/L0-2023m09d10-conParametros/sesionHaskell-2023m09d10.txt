@@ -1,0 +1,158 @@
+
+--
+-- Sesion Haskell sesionHaskell-2023m09d10.txt
+-- Copiando varias líneas y pegando en ghci
+--
+-- TAMBIEN VER el archivo: L0tests.hs
+
+
+
+-------------------------------------------------------------------------------
+-- BEGIN Test semL0prog
+-------------------------------------------------------------------------------
+-- COPIAR desde BEGIN, hasta  END Test semL0prog, Y PEGAR en ghci>
+-------------------------------------------------------------------------------
+:l L0tests.hs
+---------------------------------------
+:{
+let {
+    -- Variables, todas con el mismo dominio, {D0..D3}:
+    x= Vx;
+    y= Vy;
+    z= Vz;
+    --
+    -- Lista de variables, lvXYZ, y Estados de lvXYZ:
+    lvXYZ= VLlv Vx (VLlv Vy (VLvar Vz));  -- lvXYZ= [x,y,z]
+    lvXYZestados = estadosOf (lvXYZ);    -- estadosOf [x,y,z]
+    --
+    -- Instrucciones (de asignación)
+    asigX1 = Sasig Vx (Evalor D1);    -- x:=1
+    asigY2 = Sasig Vy (Evalor D2);    -- y:=2
+    asigZ3 = Sasig Vz (Evalor D3);    -- z:=3
+    --
+    -- Listas de instrucciones:
+    lsQ1= SLls asigX1 (SLls asigY2 (SLstm asigZ3));               -- [x:=1, y:=2, z:=3] OK
+    lsQ2= SLls asigX1 (SLls asigY2 (SLls asigZ3 (SLstm Shalt)));  -- [x:=1, y:=2, z:=3, Halt] OK
+    lsQ3= SLls asigX1 (SLls asigY2 (SLls Shalt (SLstm asigZ3)));  -- [x:=1, y:=2, Halt, z:=3] OK
+    --
+    -- Programas:
+    progQ1 = Prog (lvXYZ, lsQ1); -- VAR [x,y,z] PROG [x:=1, y:=2, z:=3] OK
+    progQ2 = Prog (lvXYZ, lsQ2); -- VAR [x,y,z] PROG [x:=1, y:=2, z:=3, Halt] OK
+    progQ3 = Prog (lvXYZ, lsQ3); -- VAR [x,y,z] PROG [x:=1, y:=2, Halt, z:=3] OK
+    --
+    -- Semántica de los Programas:
+    progQ1Sem = semL0prog progQ1;
+    progQ2Sem = semL0prog progQ2;
+    progQ3Sem = semL0prog progQ3;
+    --
+    }
+:}
+--
+---------------------------------------
+:{
+do {
+        putStrLn "-- Test semL0prog, Semántica de Programas de L0:\n";
+
+        putStrLn "-- Muestra los Estados de la Lista de Variables lvXYZ, lvXYZestados:";
+        putStrLn (showShortList lvXYZestados);     -- Muestra lvXYZestados
+        putStrLn "";
+
+        putStrLn "-- Muestra la Lista de Variables lvXYZ:";
+        putStrLn (show lvXYZ);  -- Muestra lvXYZ
+        putStrLn "";
+
+        putStrLn "-- Muestra la Lista de Instrucciones lsQ1:";
+        putStrLn (show lsQ1);  -- Muestra lsQ1
+        putStrLn "";
+
+        putStrLn "-- Muestra la Lista de Instrucciones lsQ2:";
+        putStrLn (show lsQ2);  -- Muestra lsQ2
+        putStrLn "";
+
+        putStrLn "-- Muestra la Lista de Instrucciones lsQ3:";
+        putStrLn (show lsQ3);  -- Muestra lsQ3
+        putStrLn "";
+
+        putStrLn "-- Muestra el Programa progQ1:";
+        putStrLn (showProg progQ1);
+        --
+        putStrLn "-- Muestra la Semántica del Programa progQ1:";
+        putStrLn (show progQ1Sem);
+        putStrLn "";
+        --
+
+        putStrLn "-- Muestra el Programa progQ2:";
+        putStrLn (showProg progQ2);
+        --
+        putStrLn "-- Muestra la Semántica del Programa progQ2:";
+        putStrLn (show progQ2Sem);
+        putStrLn "";
+        --
+
+        putStrLn "-- Muestra el Programa progQ3:";
+        putStrLn (showProg progQ3);
+        --
+        putStrLn "-- Muestra la Semántica del Programa progQ3:";
+        putStrLn (show progQ3Sem);
+        putStrLn "";
+        --
+    }
+:}
+---------------------------------------
+-- END Test semL0prog
+---------------------------------------
+---------------------------------------
+
+
+
+
+-------------------------------------------------------------------------------
+-- BEGIN Test semStmList
+---------------------------------------
+-------------------------------------------------------------------------------
+-- COPIAR desde BEGIN hasta  END Test semStmList, Y PEGAR en ghci>
+-------------------------------------------------------------------------------
+:l L0tests.hs
+---------------------------------------
+:{
+x= Vx
+--
+asigX0 = Sasig x (Evalor D0)    -- x:=0
+--
+asigX1 = Sasig x (Evalor D1)    -- x:=1
+asigX2 = Sasig x (Evalor D2)    -- x:=2
+lsQ1= SLls asigX1 (SLstm asigX2) -- [x:=1, x:=2]
+--
+edosX = estadosOf (VLvar x) -- estadosOf [x]
+--
+sigma= edosX !! 0
+--
+ls1Sem = semStmList lsQ1 sigma
+:}
+--
+---------------------------------------
+:{
+do {
+        putStrLn "-- Test semStmList, Semántica de Listas de Instrucciones de L0:\n";
+
+        putStrLn "-- Muestra edosX:";
+        putStrLn (showShortList edosX);     -- Muestra edosX
+        putStrLn "";
+
+        putStrLn "-- Muestra lsQ1:";
+        putStrLn (show lsQ1);  -- Muestra lsQ1
+        putStrLn "";
+
+        putStrLn "-- Muestra ls1Sem:";
+        putStrLn (show ls1Sem);     -- ls1Sem
+        putStrLn "";
+    }
+:}
+---------------------------------------
+-- END Test semStmList
+---------------------------------------
+---------------------------------------
+
+
+
+

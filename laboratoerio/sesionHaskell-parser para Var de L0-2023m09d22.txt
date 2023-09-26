@@ -1,0 +1,57 @@
+mcb@Inspiron-14z:~/.../L0$ ghci
+GHCi, version 8.8.4: https://www.haskell.org/ghc/  :? for help
+Prelude>
+Prelude>
+Prelude>
+Prelude> :l HuttonParsing.hs
+[1 of 2] Compiling L0sintaxis       ( L0sintaxis.hs, interpreted )
+[2 of 2] Compiling HuttonParsing    ( HuttonParsing.hs, interpreted )
+Ok, two modules loaded.
+*HuttonParsing>
+*HuttonParsing>
+*HuttonParsing> :set +t
+*HuttonParsing>
+*HuttonParsing> :info parserV
+parserVar  parserVx   parserVy
+*HuttonParsing> :info parserVar
+parserVar :: Parser Var 	-- Defined at HuttonParsing.hs:362:1
+*HuttonParsing> :list parserVar
+361  parserVar :: Parser Var
+362  parserVar = parserVx <|> parserVy -- <|> parserVz
+363
+*HuttonParsing> :list parserVx
+332  parserVx :: Parser Var
+333  parserVx = P (\inp -> case inp of
+334      []      -> [] -- el parser falla
+335      (c:cs)  -> if c=='x'
+336                    then [(Vx, cs)]
+337                    else []
+338      )
+339
+*HuttonParsing> :list parserVy
+351  parserVy :: Parser Var
+352  parserVy = P (\inp -> case inp of
+353      []      -> [] -- el parser falla
+354      (c:cs)  -> if c=='y'
+355                    then [(Vy, cs)]
+356                    else []
+357      )
+358
+*HuttonParsing> :list parserVar
+361  parserVar :: Parser Var
+362  parserVar = parserVx <|> parserVy -- <|> parserVz
+363
+*HuttonParsing>
+*HuttonParsing> parse parserVar "ybc"
+[(y,"bc")]
+it :: [(Var, String)]
+*HuttonParsing>
+*HuttonParsing> parse parserVar "xbc"
+[(x,"bc")]
+it :: [(Var, String)]
+*HuttonParsing>
+*HuttonParsing> parse parserVar "zbc" --FALTA definir parserVz
+[]
+it :: [(Var, String)]
+*HuttonParsing>
+*HuttonParsing>

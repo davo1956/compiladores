@@ -1,0 +1,183 @@
+
+ejecucion-Haskell-copiandoYpegando-2023m09d10.txt
+copiando de sesionHaskell-2023m09d10.txt
+y pegando en ghci
+
+*L0tests> -- BEGIN Test semL0prog
+*L0tests> -------------------------------------------------------------------------------
+*L0tests> -- COPIAR desde BEGIN, hasta  END Test semL0prog, Y PEGAR en ghci>
+*L0tests> -------------------------------------------------------------------------------
+*L0tests> :l L0tests.hs
+[1 of 5] Compiling L0sintaxis       ( L0sintaxis.hs, interpreted )
+[2 of 5] Compiling L0estados        ( L0estados.hs, interpreted )
+[3 of 5] Compiling L0show           ( L0show.hs, interpreted )
+[4 of 5] Compiling L0semantica      ( L0semantica.hs, interpreted )
+[5 of 5] Compiling L0tests          ( L0tests.hs, interpreted )
+Ok, five modules loaded.
+*L0tests> ---------------------------------------
+*L0tests> :{
+*L0tests| let {
+*L0tests|     -- Variables, todas con el mismo dominio, {D0..D3}:
+*L0tests|     x= Vx;
+*L0tests|     y= Vy;
+*L0tests|     z= Vz;
+*L0tests|     --
+*L0tests|     -- Lista de variables, lvXYZ, y Estados de lvXYZ:
+*L0tests|     lvXYZ= VLlv Vx (VLlv Vy (VLvar Vz));  -- lvXYZ= [x,y,z]
+*L0tests|     lvXYZestados = estadosOf (lvXYZ);    -- estadosOf [x,y,z]
+*L0tests|     --
+*L0tests|     -- Instrucciones (de asignación)
+*L0tests|     asigX1 = Sasig Vx (Evalor D1);    -- x:=1
+*L0tests|     asigY2 = Sasig Vy (Evalor D2);    -- y:=2
+*L0tests|     asigZ3 = Sasig Vz (Evalor D3);    -- z:=3
+*L0tests|     --
+*L0tests|     -- Listas de instrucciones:
+*L0tests|     lsQ1= SLls asigX1 (SLls asigY2 (SLstm asigZ3));               -- [x:=1, y:=2, z:=3] OK
+*L0tests|     lsQ2= SLls asigX1 (SLls asigY2 (SLls asigZ3 (SLstm Shalt)));  -- [x:=1, y:=2, z:=3, Halt] OK
+*L0tests|     lsQ3= SLls asigX1 (SLls asigY2 (SLls Shalt (SLstm asigZ3)));  -- [x:=1, y:=2, Halt, z:=3] OK
+*L0tests|     --
+*L0tests|     -- Programas:
+*L0tests|     progQ1 = Prog (lvXYZ, lsQ1); -- VAR [x,y,z] PROG [x:=1, y:=2, z:=3] OK
+*L0tests|     progQ2 = Prog (lvXYZ, lsQ2); -- VAR [x,y,z] PROG [x:=1, y:=2, z:=3, Halt] OK
+*L0tests|     progQ3 = Prog (lvXYZ, lsQ3); -- VAR [x,y,z] PROG [x:=1, y:=2, Halt, z:=3] OK
+*L0tests|     --
+*L0tests|     -- Semántica de los Programas:
+*L0tests|     progQ1Sem = semL0prog progQ1;
+*L0tests|     progQ2Sem = semL0prog progQ2;
+*L0tests|     progQ3Sem = semL0prog progQ3;
+*L0tests|     --
+*L0tests|     }
+*L0tests| :}
+asigX1 :: Stm Val4
+asigY2 :: Stm Val4
+asigZ3 :: Stm Val4
+lsQ1 :: StmList Val4
+lsQ2 :: StmList Val4
+lsQ3 :: StmList Val4
+lvXYZ :: VarList
+lvXYZestados :: [Estado Val]
+progQ1 :: Prog Val4
+progQ1Sem :: [Estado Val]
+progQ2 :: Prog Val4
+progQ2Sem :: [Estado Val]
+progQ3 :: Prog Val4
+progQ3Sem :: [Estado Val]
+x :: Var
+y :: Var
+z :: Var
+*L0tests> --
+*L0tests> ---------------------------------------
+*L0tests> :{
+*L0tests| do {
+*L0tests|         putStrLn "-- Test semL0prog, Semántica de Programas de L0:\n";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra los Estados de la Lista de Variables lvXYZ, lvXYZestados:";
+*L0tests|         putStrLn (showShortList lvXYZestados);     -- Muestra lvXYZestados
+*L0tests|         putStrLn "";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra la Lista de Variables lvXYZ:";
+*L0tests|         putStrLn (show lvXYZ);  -- Muestra lvXYZ
+*L0tests|         putStrLn "";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra la Lista de Instrucciones lsQ1:";
+*L0tests|         putStrLn (show lsQ1);  -- Muestra lsQ1
+*L0tests|         putStrLn "";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra la Lista de Instrucciones lsQ2:";
+*L0tests|         putStrLn (show lsQ2);  -- Muestra lsQ2
+*L0tests|         putStrLn "";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra la Lista de Instrucciones lsQ3:";
+*L0tests|         putStrLn (show lsQ3);  -- Muestra lsQ3
+*L0tests|         putStrLn "";
+*L0tests|
+*L0tests|         putStrLn "-- Muestra el Programa progQ1:";
+*L0tests|         putStrLn (showProg progQ1);
+*L0tests|         --
+*L0tests|         putStrLn "-- Muestra la Semántica del Programa progQ1:";
+*L0tests|         putStrLn (show progQ1Sem);
+*L0tests|         putStrLn "";
+*L0tests|         --
+*L0tests|
+*L0tests|         putStrLn "-- Muestra el Programa progQ2:";
+*L0tests|         putStrLn (showProg progQ2);
+*L0tests|         --
+*L0tests|         putStrLn "-- Muestra la Semántica del Programa progQ2:";
+*L0tests|         putStrLn (show progQ2Sem);
+*L0tests|         putStrLn "";
+*L0tests|         --
+*L0tests|
+*L0tests|         putStrLn "-- Muestra el Programa progQ3:";
+*L0tests|         putStrLn (showProg progQ3);
+*L0tests|         --
+*L0tests|         putStrLn "-- Muestra la Semántica del Programa progQ3:";
+*L0tests|         putStrLn (show progQ3Sem);
+*L0tests|         putStrLn "";
+*L0tests|         --
+*L0tests|     }
+*L0tests| :}
+-- Test semL0prog, Semántica de Programas de L0:
+
+-- Muestra los Estados de la Lista de Variables lvXYZ, lvXYZestados:
+[Estado [(Vx,D0),(Vy,D0),(Vz,D0)], Estado [(Vx,D0),(Vy,D0),(Vz,D1)], Estado [(Vx,D0),(Vy,D0),(Vz,D2)], ..., Estado [(Vx,D3),(Vy,D3),(Vz,D3)]]
+
+-- Muestra la Lista de Variables lvXYZ:
+VLlv Vx (VLlv Vy (VLvar Vz))
+
+-- Muestra la Lista de Instrucciones lsQ1:
+SLls (Sasig Vx (Evalor D1)) (SLls (Sasig Vy (Evalor D2)) (SLstm (Sasig Vz (Evalor D3))))
+
+-- Muestra la Lista de Instrucciones lsQ2:
+SLls (Sasig Vx (Evalor D1)) (SLls (Sasig Vy (Evalor D2)) (SLls (Sasig Vz (Evalor D3)) (SLstm Shalt)))
+
+-- Muestra la Lista de Instrucciones lsQ3:
+SLls (Sasig Vx (Evalor D1)) (SLls (Sasig Vy (Evalor D2)) (SLls Shalt (SLstm (Sasig Vz (Evalor D3)))))
+
+-- Muestra el Programa progQ1:
+L0-Program NOMBRE XXX
+    VAR
+        Vx;
+        Vy;
+        Vz
+    PROG
+        Sasig Vx (Evalor D1);
+        Sasig Vy (Evalor D2);
+        Sasig Vz (Evalor D3)
+
+-- Muestra la Semántica del Programa progQ1:
+[Estado [(Vx,D1),(Vy,D2),(Vz,D3)]]
+
+-- Muestra el Programa progQ2:
+L0-Program NOMBRE XXX
+    VAR
+        Vx;
+        Vy;
+        Vz
+    PROG
+        Sasig Vx (Evalor D1);
+        Sasig Vy (Evalor D2);
+        Sasig Vz (Evalor D3);
+        Shalt
+
+-- Muestra la Semántica del Programa progQ2:
+[Omega [(Vx,D1),(Vy,D2),(Vz,D3)]]
+
+-- Muestra el Programa progQ3:
+L0-Program NOMBRE XXX
+    VAR
+        Vx;
+        Vy;
+        Vz
+    PROG
+        Sasig Vx (Evalor D1);
+        Sasig Vy (Evalor D2);
+        Shalt;
+        Sasig Vz (Evalor D3)
+
+-- Muestra la Semántica del Programa progQ3:
+[Omega [(Vx,D1),(Vy,D2),(Vz,D0)],Omega [(Vx,D1),(Vy,D2),(Vz,D1)],Omega [(Vx,D1),(Vy,D2),(Vz,D2)],Omega [(Vx,D1),(Vy,D2),(Vz,D3)]]
+
+it :: ()
+*L0tests> ---------------------------------------
+*L0tests> -- END Test semL0prog
+*L0tests>
