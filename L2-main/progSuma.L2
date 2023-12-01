@@ -1,0 +1,8 @@
+L2PROG progSuma
+VAR
+    x: [7];
+
+PROG 
+    {y:=0;};
+    For (x1 := 1 To x) Do
+	 y:= (y + x1)
